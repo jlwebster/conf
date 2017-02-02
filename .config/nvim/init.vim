@@ -81,6 +81,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-sensible'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'gfontenot/vim-xcode'
 
 " Initialize plugin system
 call plug#end()
