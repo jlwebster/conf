@@ -75,3 +75,13 @@ let g:syntastic_check_on_open=1
 
 " Always use vertical diffs
 set diffopt+=vertical
+
+" Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
+call plug#begin('~/.vim/plugged')
+
+Plug 'tpope/vim-sensible'
+Plug 'christoomey/vim-tmux-navigator'
+
+" Initialize plugin system
+call plug#end()
+" Reload .vimrc and :PlugInstall to install plugins
