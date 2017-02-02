@@ -19,6 +19,8 @@ endif
 
 filetype plugin indent on
 
+autocmd BufWritePre *.swift :%s/\s\+$//e
+
 augroup vimrcEx
   autocmd!
 
@@ -45,6 +47,7 @@ set tabstop=2
 set shiftwidth=2
 set shiftround
 set expandtab
+set ignorecase
 
 " Display extra whitespace
 set list listchars=tab:»·,trail:·,nbsp:·
@@ -60,21 +63,46 @@ set colorcolumn=+1
 set number
 set numberwidth=5
 
+" Tab completion
+" will insert tab at beginning of line,
+" will use completion if not at beginning
+set wildmode=list:longest,list:full
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <S-Tab> <c-n>
+
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
 set splitright
 
-" Quicker window movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-
-" configure syntastic syntax checking to check on open as well as save
-let g:syntastic_check_on_open=1
-
 " Always use vertical diffs
 set diffopt+=vertical
+
+set secure  " Don't let external configs do scary things
+set exrc    " Load local vimrc if found
+
+" Configure syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Configure swift.vim
+let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
+
+" Configure command-t
+let g:CommandTTraverseSCM= 'pwd'
 
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
 call plug#begin('~/.vim/plugged')
@@ -82,6 +110,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'gfontenot/vim-xcode'
+Plug 'vim-syntastic/syntastic'
+Plug 'keith/swift.vim'
+Plug 'wincent/command-t', { 'do': 'cd ruby/command-t && ruby extconf.rb && make' }
 
 " Initialize plugin system
 call plug#end()
