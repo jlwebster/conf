@@ -1,0 +1,14 @@
+set incsearch      " do incremental searching
+set laststatus=2   " always display the status line
+set clipboard=unnamed
+
+set ignorecase
+
+" Numbers
+set number
+
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
